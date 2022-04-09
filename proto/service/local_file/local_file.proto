@@ -1,0 +1,21 @@
+// @since 2022-04-09 19:26:20
+// @author acrazing <joking.young@gmail.com>
+
+syntax = "proto3";
+
+package universal_ingress_controller.service.local_file;
+
+option go_package = "github.com/acrazing/universal-ingress-controller/gen/service/local_file";
+
+message WatchRequest {
+  map<string, string> metadata = 1;
+}
+
+message WatchResponse {
+  int32 revision = 1;
+  map<string, string> files = 2;
+}
+
+service LocalFileService {
+  rpc Watch(WatchRequest) returns (stream WatchResponse) {}
+}

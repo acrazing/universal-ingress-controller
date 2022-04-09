@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      volumes:
+        - name: envoy-config
+          configMap:
+            name: envoy-config
+        - name: dynamic-resource # <- use shared volume to update dynamic resources
+          emptyDir: {}
+      containers:
+        - name: ingress
+          image: universal-ingress-controller-envoy:v0.1.0
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: dynamic-resource
+              mountPath: /data/config
+        - name: envoy
+          args: ["--disable-hot-restart", "--config-path", "/etc/envoy/envoy.yaml"]
+          image: envoyproxy/envoy:v1.21.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+          volumeMounts:
+            - name: envoy-config
+              mountPath: /etc/envoy/envoy.yaml
+              subPath: envoy.yaml
+            - name: dynamic-resource
+              mountPath: /data/config
