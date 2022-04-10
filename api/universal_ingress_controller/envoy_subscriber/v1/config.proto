@@ -1,0 +1,33 @@
+// @since 2022-04-09 19:52:51
+// @author acrazing <joking.young@gmail.com>
+
+syntax = "proto3";
+
+package universal_ingress_controller.envoy_subscriber.v1;
+
+option go_package = "github.com/acrazing/universal-ingress-controller/gen/envoy_subscriber/v1;envoyv1";
+
+import "validate/validate.proto";
+import "envoy/service/discovery/v3/discovery.proto";
+import "universal_ingress_controller/core/v1/config.proto";
+
+message EnvoyConfig {
+  repeated string target_listeners = 1 [(validate.rules).repeated = {unique: true, items: {string: {not_in: [""]}}}];
+
+  message DiscoverySource {
+    oneof source {
+      // cannot use envoy.v1 package due to this
+      envoy.service.discovery.v3.DiscoveryResponse inline = 1;
+      universal_ingress_controller.core.v1.KubeResource kube = 2;
+    }
+  }
+
+  DiscoverySource clusters = 2;
+  DiscoverySource listeners = 3;
+  DiscoverySource runtimes = 4;
+  DiscoverySource routes = 5;
+  DiscoverySource scoped_routes = 6;
+  DiscoverySource hosts = 7;
+  DiscoverySource endpoints = 8;
+  DiscoverySource secrets = 9;
+}

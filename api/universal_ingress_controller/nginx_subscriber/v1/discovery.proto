@@ -3,9 +3,9 @@
 
 syntax = "proto3";
 
-package universal_ingress_controller.nginx;
+package universal_ingress_controller.nginx_subscriber.v1;
 
-option go_package = "github.com/acrazing/universal-ingress-controller/gen/nginx;nginxpb";
+option go_package = "github.com/acrazing/universal-ingress-controller/gen/nginx_subscriber/v1;nginxv1";
 
 message WatchRequest {
   map<string, string> metadata = 1;

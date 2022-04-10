@@ -6,29 +6,18 @@ run:
 test:
 	go test -v ./pkg/...
 
-.PHONY: deps-install
-
-deps-install:
-	@mkdir -p third_party && \
-	cd third_party && \
-	git clone https://github.com/envoyproxy/protoc-gen-validate --depth 1 && \
-	git clone https://github.com/googleapis/googleapis.git --depth 1 && \
-	echo "Done!"
-
-.PHONY: deps-update
-
-deps-update: ./third_party/*
-	@for dir in $^; do \
-		git -C $${dir} pull; \
-	done
-
-PROTO_FILE_LIST := $(shell find proto -type f -name '*.proto')
-
 .PHONY: pb
 
-pb:$(PROTO_FILE_LIST)
-	@rm -rf gen temp/go
-	@mkdir -p temp/go
-	@protoc -Iproto -Ithird_party --go_out=temp/go --validate_out=lang=go:temp/go $^
-	@mv temp/go/github.com/acrazing/universal-ingress-controller/gen/ gen
-	@echo "Done!"
+pb:
+	@set -e; \
+	rm -rf temp gen; \
+	buf generate api; \
+	mv temp/go/github.com/acrazing/universal-ingress-controller/gen gen; \
+	rm -rf temp; \
+	echo "Done!"
+
+pb-vendor-root:
+	@set -e; \
+	rm -rf third_party; \
+	mkdir -p third_party; \
+	ln -sf $$(find $(HOME)/.cache/buf/v1/module/data -type f -name 'buf.yaml' | xargs -I % bash -c 'find $$(dirname %)/* -maxdepth 0 -type d') $(PWD)/third_party

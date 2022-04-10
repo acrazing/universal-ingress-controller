@@ -23,7 +23,7 @@ func main() {
 	flag.Parse()
 
 	if printVersion {
-		fmt.Printf("universal-ingress-controller: %s", version)
+		fmt.Printf("universal-ingress-controller: %s\n", version)
 		os.Exit(0)
 	}
 

@@ -1,0 +1,28 @@
+// @since 2022-04-09 19:52:51
+// @author acrazing <joking.young@gmail.com>
+
+syntax = "proto3";
+
+package universal_ingress_controller.core.v1;
+
+option go_package = "github.com/acrazing/universal-ingress-controller/gen/core/v1;corev1";
+
+import "validate/validate.proto";
+import "google/protobuf/any.proto";
+
+message Config {
+  uint32 port = 1 [(validate.rules).uint32 = {lt: 65536}];
+  map<string, google.protobuf.Any> subscribers = 2 [(validate.rules).map = {no_sparse: true, values: {message: {required: true}}}];
+}
+
+message KubeResource {
+  enum Kind {
+    KIND_UNSPECIFIED = 0;
+    KIND_CONFIGMAP = 1;
+    KIND_SECRET = 2;
+  }
+
+  Kind kind = 1 [(validate.rules).enum = {not_in: [0]}];
+  string name = 2 [(validate.rules).string = {not_in: [""]}];
+  string path = 3 [(validate.rules).string = {not_in: [""]}];
+}

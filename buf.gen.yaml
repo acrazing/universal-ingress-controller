@@ -1,0 +1,10 @@
+version: v1
+plugins:
+  - name: go
+    out: temp/go
+  - name: go-grpc
+    out: temp/go
+  - name: validate
+    out: temp/go
+    opt:
+      - lang=go
