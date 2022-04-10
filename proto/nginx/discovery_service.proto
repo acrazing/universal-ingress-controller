@@ -1,11 +1,11 @@
-// @since 2022-04-09 19:26:20
+// @since 2022-04-10 16:09:12
 // @author acrazing <joking.young@gmail.com>
 
 syntax = "proto3";
 
-package universal_ingress_controller.service.local_file;
+package universal_ingress_controller.nginx;
 
-option go_package = "github.com/acrazing/universal-ingress-controller/gen/service/local_file";
+option go_package = "github.com/acrazing/universal-ingress-controller/gen/nginx;nginxpb";
 
 message WatchRequest {
   map<string, string> metadata = 1;

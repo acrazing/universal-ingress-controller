@@ -5,7 +5,10 @@ syntax = "proto3";
 
 package universal_ingress_controller.envoy;
 
-option go_package = "github.com/acrazing/universal-ingress-controller/gen/envoy";
+option go_package = "github.com/acrazing/universal-ingress-controller/gen/envoy;envoypb";
+
+import "protoc-gen-validate/validate/validate.proto";
 
 message EnvoyConfig {
+  repeated string target_listeners = 1 [(validate.rules).repeated = {unique: true, items: {string: {not_in: [""]}}}];
 }

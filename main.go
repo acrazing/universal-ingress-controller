@@ -18,7 +18,7 @@ var version = "v0.1.0"
 func main() {
 	var configFile string
 	var printVersion bool
-	flag.StringVar(&configFile, "config", "", "specify config file")
+	flag.StringVar(&configFile, "config", "", "specify config file, could be a local file(default), or configmap/secret with format [cm|secret]:<name>:<path>.")
 	flag.BoolVar(&printVersion, "version", false, "show version number")
 	flag.Parse()
 

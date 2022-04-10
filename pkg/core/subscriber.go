@@ -3,12 +3,25 @@
 
 package core
 
-import "fmt"
+import (
+	"fmt"
+	"google.golang.org/grpc"
+)
 
-type Subscriber interface {
+type SubscribeResource struct {
+	Name     string
+	Revision int
+	Filename string
+	Data     []byte
 }
 
-type SubscriberFactory func(configFile string) Subscriber
+type Subscriber interface {
+	TransformIngresses(ingresses map[string]*Ingress) error
+	UpdateResources(resources map[string]*SubscribeResource) error
+	RegisterGrpcServers(s *grpc.Server)
+}
+
+type SubscriberFactory func() Subscriber
 
 var subscriberFactories = map[string]SubscriberFactory{}
 

@@ -29,6 +29,6 @@ PROTO_FILE_LIST := $(shell find proto -type f -name '*.proto')
 pb:$(PROTO_FILE_LIST)
 	@rm -rf gen temp/go
 	@mkdir -p temp/go
-	@protoc -Iproto -Ithird_party --go_out=plugins=grpc:temp/go --validate_out=lang=go:temp/go $^
+	@protoc -Iproto -Ithird_party --go_out=temp/go --validate_out=lang=go:temp/go $^
 	@mv temp/go/github.com/acrazing/universal-ingress-controller/gen/ gen
 	@echo "Done!"

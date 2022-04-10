@@ -3,15 +3,39 @@
 
 package envoy
 
-import "github.com/acrazing/universal-ingress-controller/pkg/core"
+import (
+	envoypb "github.com/acrazing/universal-ingress-controller/gen/envoy"
+	"github.com/acrazing/universal-ingress-controller/pkg/core"
+	discoveryv3 "github.com/envoyproxy/go-control-plane/envoy/service/discovery/v3"
+	"google.golang.org/grpc"
+)
 
 const name = "envoy"
 
 type envoySubscriber struct {
+	config *envoypb.EnvoyConfig
+	ads    *ads
 }
 
-func NewEnvoySubscriber(configFile string) core.Subscriber {
-	return &envoySubscriber{}
+func (e *envoySubscriber) TransformIngresses(ingresses map[string]*core.Ingress) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (e *envoySubscriber) UpdateResources(resources map[string]*core.SubscribeResource) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (e *envoySubscriber) RegisterGrpcServers(s *grpc.Server) {
+	discoveryv3.RegisterAggregatedDiscoveryServiceServer(s, e.ads)
+}
+
+func NewEnvoySubscriber() core.Subscriber {
+	return &envoySubscriber{
+		config: &envoypb.EnvoyConfig{},
+		ads:    newAds(),
+	}
 }
 
 func init() {

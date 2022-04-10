@@ -3,7 +3,8 @@ module github.com/acrazing/universal-ingress-controller
 go 1.18
 
 require (
-	github.com/golang/protobuf v1.5.2
+	github.com/envoyproxy/go-control-plane v0.10.1
+	github.com/envoyproxy/protoc-gen-validate v0.6.7
 	google.golang.org/api v0.74.0
 	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.28.0
@@ -11,7 +12,9 @@ require (
 
 require (
 	cloud.google.com/go/compute v1.5.0 // indirect
-	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
+	github.com/cncf/xds/go v0.0.0-20211011173535-cb28da3451f1 // indirect
+	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.2.0 // indirect
 	go.opencensus.io v0.23.0 // indirect
 	golang.org/x/net v0.0.0-20220325170049-de3da57026de // indirect

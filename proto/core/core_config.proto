@@ -7,5 +7,26 @@ package universal_ingress_controller.core;
 
 option go_package = "github.com/acrazing/universal-ingress-controller/gen/core";
 
-message ControllerConfig {
+import "protoc-gen-validate/validate/validate.proto";
+
+message Config {
+  uint32 port = 1 [(validate.rules).uint32 = {lt: 65536}];
+
+  message SubscriberConfig {
+    message ResourceConfig {
+      enum Kind {
+        Reserved = 0;
+        ConfigMap = 1;
+        Secret = 2;
+      }
+
+      Kind kind = 1 [(validate.rules).enum = {not_in: [0]}];
+      string name = 2 [(validate.rules).string = {not_in: [""]}];
+      repeated string path = 3 [(validate.rules).repeated = {min_items: 1, unique: true, items: {string: {not_in: [""]}}}];
+    }
+
+    map<string, ResourceConfig> resources = 1 [(validate.rules).map = {no_sparse: true, keys: {string: {not_in: [""]}}, values: {message: {required: true}}}];
+  }
+
+  map<string, SubscriberConfig> subscribers = 2 [(validate.rules).map = {no_sparse: true, keys: {string: {not_in: [""]}}, values: {message: {required: true}}}];
 }

@@ -4,6 +4,7 @@
 package core
 
 type UniversalIngressController struct {
+	subscribers []Subscriber
 }
 
 func (c *UniversalIngressController) Run() error {
